@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista Produtos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header>
+    <h1>PreçoCerto - Lista de Produtos</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</header>
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nome do Produto</th>
+                    <th>Margem de Lucro</th>
+                    <th>Custo Total</th>
+                    <th>Sugestão de Preço de Venda</th>
+                    <th>Preço de Venda</th>
+                    <th>Lucro por Unidade</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for produto in produtos %}
+                <tr>
+                    <td>{{ produto[1] }}</td>
+                    <td>{{ produto[2] }}</td>
+                    <td>{{ produto[3] }}</td>
+                    <td>{{ produto[4] }}</td>
+                    <td>{{ produto[5] }}</td>
+                    <td>{{ produto[6] }}</td>
+                    <td>
+                        <a href="{{ url_for('editar_produto', id=produto[0]) }}">Editar</a>
+
+                        <form action="{{ url_for('deletar_produto', id=produto[0]) }}" method="POST" style="display: inline">
+                            <button type="submit">Deletar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

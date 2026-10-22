@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/adicionar_produto.css') }}">
+</head>
+<body>
+    <!-- HEADER / CABEÇALHO -->
+    <header>
+        <img src="assets/img/icones-imagem/barrinhas-menu.png" alt="barra do menu" class="barra-menu">
+        <img src="assets/img/icones-imagem/icone_logo.png" alt="logo" class="logo">
+        <h1>Preço<span>Certo</span></h1>
+        <p>PRECIFICAÇÃO AFETIVA</p>
+        <nav>
+            <a href="{{url_for('home')}}" >Voltar</a>
+        </nav>
+
+    </header>
+    <!-- BARRA LATERAL - MENU -->
+    <main>
+
+
+
+        <div class="barra-botoes">
+            <a href="{{ url_for('index') }}"><img class="icones" src="{{ url_for('static', filename='img/icone_casa.png') }}" alt="inicio">Início</a>
+            <a href="#"><img class="icones" src="{{ url_for('static', filename='img/icone_caixa.png') }}" alt="insumos">Insumos</a>
+            <a href="#"><img class="icones" src="{{ url_for('static', filename='img/icone_tocapng.png') }}" alt="produtos">Produto</a>
+            <a href="{{ url_for('perfil', id=id_usuario) }}"><img class="icones" src="{{ url_for('static', filename='img/icone_engrenagem.png') }}" alt="configuracao">Configurações</a>
+            <div class="frase-lateral">
+                <img class="folhinha" src="{{ url_for('static', filename='img/folhinhapng.png') }}">
+
+                <p>Boas escolhas hoje,melhores resultados amanhã!</p>
+            </div>
+            <img src="{{ url_for('static', filename='img/folha-barraIcone.png') }}">
+        </div>
+
+        <!-- CONTEÚDO -->
+        <div class="conteudo">
+
+            <div class="titulo">
+                <img src="{{ url_for('static', filename='img/icone_logo.png') }}">
+                <div>
+                    <h1>Adicionar Produtos</h1>
+                    <p>Cadastre suas receitas e suas informações</p>
+                </div>
+            </div>
+
+
+
+            <section>
+                <h2>Novo produto</h2>
+                <p class="subtitulo">Informe os dados abaixo para calcular o custo corretamente.</p>
+                                    {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+               <form action="{{ url_for('editar_produto', id=produto[0]) }}" method="post">
+                    <label>Nome do produto *</label>
+                    <input type="text" id="nome" name="nome" value="{{ produto[1] }}" placeholder="Ex: Bolo de Cenoura">
+
+                    <div class="linha">
+                        <div class="insumos">
+                            <label>Insumos usados *</label>
+                            <a href="{{ url_for('pesquisa_insumos') }}" ><button type="button" class="mais">+</button></a>
+
+                        </div>
+                    </div>
+
+                    <div class="linha">
+                        <div>
+                            <label>Margem de Lucro *</label>
+                            <input type="text" id="lucro" name="lucro" value="{{ produto[2] }}" placeholder="Ex: 50%" step="0.01">
+                        </div>
+
+
+                        <div>
+                            <label>Custo Total</label>
+
+                        </div>
+                        <div>
+                            <label>Sugestão de preço de venda</label>
+
+                        </div>
+                    </div>
+
+                    <label>Preço de Venda *</label>
+                    <input type="text" id="preco" name="preco" value="{{ produto[5] }}" placeholder="Ex: R$20,00" step="0.01">
+
+                    <label>Lucro por unidade</label>
+
+                    <button type="submit" class="btn">Salvar</button>
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- FOOTER / RODAPÉ -->
+    <footer>
+        <div class="logo-footer">
+            <img src="{{ url_for('static', filename='img/chapeu.png') }}" >
+            <div>
+                <h2>Preço<span>Certo</span></h2>
+                <p>PRECIFICAÇÃO AFETIVA</p>
+            </div>
+            <span class="frase">Precificação afetiva para negócios reais.</span>
+        </div>
+
+        <span>© 2026 PreçoCerto</span>
+    </footer>
+
+</body>
+</html>

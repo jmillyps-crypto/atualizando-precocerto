@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lista Insumos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<header>
+    <h1>Biblioteca - Controle de Usuários</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+</header>
+    <main>
+        <table>
+            <thead>
+                <tr>
+
+                    <th>Nome</th>
+                    <th>Unidade</th>
+                    <th>Custo Unitário</th>
+                    <th>Estoque</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for insumo in insumos %}
+                <tr>
+
+                    <td>{{ insumo[1] }}</td>
+                    <td>{{ insumo[2] }}</td>
+                    <td>{{ insumo[3] }}</td>
+                    <td>{{ insumo[4] }}</td>
+                    <td>
+                        <a href="{{ url_for('editar_insumo', id=insumo[0]) }}">Editar</a>
+
+                        <form action="{{ url_for('deletar_insumo', id=insumo[0]) }}" method="POST" style="display: inline">
+                            <button type="submit">Deletar</button>
+                        </form>
+                    </td>
+
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </main>
+
+
+</body>
+</html>

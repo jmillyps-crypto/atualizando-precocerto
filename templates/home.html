@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DashBoard - PrecoCerto</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+    <!-- HEADER / CABEÇALHO -->
+    <header>
+        <img src="{{ url_for('static', filename='img/icone_menu.png') }}" alt="barra do menu" class="barra-menu">
+        <img src="{{ url_for('static', filename='img/icone_logo.png') }}" alt="logo" class="logo">
+        <h1>Preço<span>Certo</span></h1>
+        <p>PRECIFICAÇÃO AFETIVA</p>
+        <nav>
+            <a href="{{url_for('logout')}}" >Sair</a>
+        </nav>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+        {% endif %}
+        {% endwith %}
+
+    </header>
+    <!-- BARRA LATERAL - MENU -->
+    <main>
+        <div class="barra-botoes">
+            <a><img class="icones" src="{{ url_for('static', filename='img/icone_casa.png') }}" alt="incio"> Início</a>
+            <a href="{{url_for('pagina_insumos')}}"><img class="icones" src="{{ url_for('static', filename='img/icone_caixa.png') }}" alt="insumos"> Insumos</a>
+            <a href="{{url_for('pagina_produtos')}}"><img class="icones" src="{{ url_for('static', filename='img/icone_tocapng.png') }}"> Produtos</a>
+            <a href="{{url_for('perfil', id=id_usuario) }}"><img class="icones" src="{{ url_for('static', filename='img/icone_engrenagem.png') }}" alt="configuracao"> Configuração</a>
+            <div class="frase-lateral">
+                <img src="{{ url_for('static', filename='img/folhinhapng.png') }}" alt="folhinha" class="folhinha">
+
+                <p>Boas escolhas hoje,melhores resultados amanhã!</p>
+            </div>
+            <img src="{{ url_for('static', filename='img/toca.png') }}" alt="flor-barra">
+        </div>
+
+        <!-- CONTEUDO A PARTIR DO OLA -->
+        <div class="conteudo">
+            <div class="ola">
+                <div class="texto-ola">
+                    <h2>Olá, {{ session['usuario_nome'] }}!</h2>
+                    <P>Aqui está o resumo do seu negócio </P>
+                </div>
+                <div class="adicionar">
+
+                    <a href="{{url_for('adicionar_insumo') }}"  class="adicionar-insumo">
+                        <p class="mais">+</p>
+                        <p class="adi-insumo">Adicionar Insumo</p>
+                    </a>
+
+                    <a href="{{url_for('adicionar_produto') }}" class="adicionar-produto">
+                        <p class="mais">+</p>
+                        <p class="adi-produto">Adicionar Produto</p>
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- AREA DOS CARDS -->
+            <div class="area-cards-tabelas">
+                <div class="cards">
+                    <div class="card">
+                        <img class="icones" src="{{ url_for('static', filename='img/icone-home1.png') }}">
+                        <p>Valor total gasto com insumos</p>
+                        <P class="num">R$ 0,00</P>
+                    </div>
+                    <div class="card">
+                        <img class="icones" src="{{ url_for('static', filename='img/icone-home2.png') }}">
+                        <p>Total de insumos</p>
+                        <P class="num">0</P>
+                    </div>
+                    <div class="card">
+                        <img class="icones" src="{{ url_for('static', filename='img/icone-home2.png') }}">
+                        <p>Total de produtos</p>
+                        <P class="num">0</P>
+                    </div>
+
+                </div>
+
+
+                <!-- TABELAS -->
+                <div class="tabelas">
+
+                    <!-- TABELA DE INSUMOS RECENTES -->
+                    <div class="tabela-insumosRecentes">
+                        <table class="insumosRecentes">
+                            <div class="nome-tabela">
+                                <img class="icones" src="{{ url_for('static', filename='img/icone-home2.png') }}">
+                                <h3>Insumos Recentes</h3>
+                            </div>
+                            <thead>
+
+                                <tr class="tabela1">
+
+                                    <td class="informacoes">Nome</td>
+                                    <td class="informacoes">Unidade</td>
+                                    <td class="informacoes">Custo unitário</td>
+                                    <td class="informacoes">Ações</td>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+
+                                <tr class="farinha">
+
+                                    <td class="primeira-coluna">Farinha de trigo</td>
+                                    <td>Kg</td>
+                                    <td>R$ 12,50</td>
+
+                                    <td class="acoes">
+                                        <a class="editar" href="">Editar</a>
+                                            <button class="delete"type="submit">Deletar</button>
+
+                                    </td>
+
+                                </tr>
+
+
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- TABELA DE PRODUTOS RECENTES -->
+                    <div class="tabela-produtosRecentes">
+
+
+                        <table class="produtosRecentes">
+                            <div class="nome-tabela">
+                                <img class="icones" src="{{ url_for('static', filename='img/icone-home2.png') }}">
+                                <h3>Produtos Recentes</h3>
+                            </div>
+                            <thead>
+
+                                <tr class="tabela1">
+                                    <td class="informacoes">Nome</td>
+                                    <td class="informacoes">Custo total</td>
+                                    <td class="informacoes">Preço de vendas</td>
+                                    <td class="informacoes">Margem</td>
+                                    <td class="informacoes">Ações</td>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+
+                                <tr class="bolo">
+                                    <td>Bolo de chocolate</td>
+                                    <td>R$ 44,50</td>
+                                    <td>R$ 70,00</td>
+                                    <td>50%</td>
+                                    <td class="acoes">
+                                        <a class="editar" href="">Editar</a>
+
+                                        <form class="delete" action="" >
+                                            <button class="delete"type="submit">Deletar</button>
+                                        </form>
+                                    </td>
+
+                                </tr>
+
+
+                            </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </main>
+    <!-- FOOTER / RODAPÉ -->
+    <footer>
+        <div class="logo-footer">
+            <img src="{{ url_for('static', filename='img/chapeu.png') }}" >
+            <div>
+                <h2>Preço<span>Certo</span></h2>
+                <p>PRECIFICAÇÃO AFETIVA</p>
+            </div>
+            <span class="frase">Precificação afetiva para negócios reais.</span>
+        </div>
+
+        <span>© 2026 PreçoCerto</span>
+    </footer>
+</body>
+</html>
