@@ -8,9 +8,9 @@ app.config['SECRET_KEY'] = 'Aqui_e_a_chave_da_turma_a'
 
 # CONEXÃO COM O BANCO
 host = 'localhost'
-database = r'C:\Users\marco\Downloads\BANCOs.FDB'
+database = r'C:\Users\Aluno\Downloads\atualizando-precocerto\atualizando-precocerto-main\BANCO.FDB'
 user = 'SYSDBA'
-password = 'SYSDBA'
+password = 'sysdba'
 
 con = fdb.connect(host=host, database=database, user=user, password=password)
 
@@ -644,7 +644,7 @@ def deletar_insumo(id):
         cursor.close()
 
 
-@app.route('/pesquisa_insumos', methods=['GET','post'])
+@app.route('/pesquisa_insumos', methods=['GET','POST'])
 def pesquisa_insumos():
     print('1')
     if 'id_usuario' not in session:
@@ -661,25 +661,25 @@ def pesquisa_insumos():
 
         print('4')
         # SELECONA OS DADOS QUE PERTENCE AO USUÁRIO LOGADO
-        if nome is None:
+        if nome:
             cursor.execute("""SELECT id_insumos, nome, unidade
-                            FROM insumos
-                            WHERE id_usuario = ? """, (id_usuario,))
-        else:
-            print('5')
-            cursor.execute("""SELECT id_insumos, nome, unidade
-                FROM insumos
-                where nome like ? 
-                and id_usuario = ? """, (f'%{nome}%',id_usuario))
+                              FROM insumos
+                              where nome like ?
+                                and id_usuario = ? """, (f'%{nome}%', id_usuario))
 
-        # CONFERFE SE JÁ TEM ESTES DADOS DE USUÁRIO CADASTRADO E PEGA SOMENTE ELE
-            insumos = cursor.fetchone()
-            print(insumos)
-            # SE ESTE USUÁRIO NÃO EXISTIR
-            if not insumos:
-                flash('Insumo não encontrado')
-                return redirect(url_for('adicionar_insumo'))
-            print('6')
+        else:
+            cursor.execute("""SELECT id_insumos, nome, unidade
+                              FROM insumos
+                              WHERE id_usuario = ? """, (id_usuario,))
+            print('5')
+
+        insumos = cursor.fetchall()
+        print(insumos)
+        # SE ESTE USUÁRIO NÃO EXISTIR
+        if not insumos:
+            flash('Insumo não encontrado')
+            return redirect(url_for('pesquisa_insumos'))
+        print('6')
         # RETORNA NA PÁGINA DE PERFIL, AS INFORMAÇÕES CADASTRADAS DO USUÁRIO LOGADO
         return render_template('pesquisa_insumo.html', insumos=insumos)
 
@@ -690,56 +690,10 @@ def pesquisa_insumos():
     finally:
         cursor.close()  # FECHA A CONVERSA COM O BANCO
 
-#
-# @app.route('/pesquisando_insumos/<string:nome>', methods=['GET'])
-# def pesquisando_insumos(nome):
-#
-#     if 'id_usuario' not in session:
-#         flash("Você precisa estar logado!")
-#         return redirect(url_for('login_usu'))
-#
-#     id_usuario = session['id_usuario']
-#
-#     cursor = con.cursor()
-#
-#     try:
-#         # SELECONA OS DADOS QUE PERTENCE AO USUÁRIO LOGADO
-#         if nome is None:
-#             cursor.execute("""SELECT id_insumos, nome, unidade
-#                             FROM insumos
-#                             WHERE id_insumo = ? """, (id_usuario,))
-#         else:
-#             cursor.execute("""SELECT id_insumos, nome, unidade
-#                 FROM insumos
-#                 where nome = ?
-#                 and id_insumo = ? """, ( id_usuario,))
-#
-#         # CONFERFE SE JÁ TEM ESTES DADOS DE USUÁRIO CADASTRADO E PEGA SOMENTE ELE
-#             insumos = cursor.fetchone()
-#
-#             # SE ESTE USUÁRIO NÃO EXISTIR
-#             if not insumos:
-#                 flash('Insumo não encontrado')
-#                 return redirect(url_for('adicionar_insumo'))
-#
-#
-#
-#
-#         # RETORNA NA PÁGINA DE PERFIL, AS INFORMAÇÕES CADASTRADAS DO USUÁRIO LOGADO
-#         return render_template('pesquisa_insumo.html', insumos=insumos)
-#
-#     except Exception as e:  # SE ACONTECER ALGUM ERRO
-#         flash(f'Ocorreu um erro -> {e}')
-#         return redirect(url_for('home'))
-#
-#     finally:
-#         cursor.close()  # FECHA A CONVERSA COM O BANCO
-
 
 @app.route('/pagina_produtos')
 def pagina_produtos():
     return redirect(url_for("lista_produtos"))
-
 
 
 @app.route('/lista_produtos')
